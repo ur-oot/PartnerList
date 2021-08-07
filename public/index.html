@@ -1,15 +1,51 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- Load Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- Favicon -->
+    <link rel="icon" href="<%= BASE_URL %>/img/icons/favicon.ico" id="favicon" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="<%= BASE_URL %>apple-touch-icon-180x180.png"
+    />
+    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico" /> -->
+    <!-- Load Font Awesome
+    <link
+      rel=""
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    /> -->
+    <!-- Load Google font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Load Progress indicator -->
+    <link
+      href="https://unpkg.com/nprogress@0.2.0/nprogress.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+    <!-- Load Axios -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+
+    <title>PartnerList</title>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but codesandbox doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
