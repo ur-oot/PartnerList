@@ -1,24 +1,11 @@
 # partnerlist
+[栃木SC](https://www.tochigisc.jp/sponsor/)のパートナー企業をまとめたサービスです
+## App URL
 
-## Project setup
+## Usage
+```sh
+$ git clone https://github.com/ur-oot/PartnerList.git
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Author
+Twiiter:[@kausaus_](https://twitter.com/kausaus_)  
+Github:[ur-oot](https://github.com/ur-oot)
