@@ -81,29 +81,31 @@ export default function CompanySearchFilter({
       {isOpenMobileFilter && (
         <div className="mt-6 pt-6 border-t border-slate-100 space-y-5 animate-in fade-in duration-150">
           {/* サポートメニュー（カテゴリ） */}
-          <div>
-            <span className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-              サポートメニュー
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {categories.map((cat) => {
-                const isSelected = selectedCategories.includes(cat);
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => onCategoryToggle(cat)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                      isSelected
-                        ? "bg-tochigi-navy text-tochigi-yellow shadow-sm font-semibold"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
+          {categories.length > 0 && (
+            <div>
+              <span className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                サポートメニュー
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {categories.map((cat) => {
+                  const isSelected = selectedCategories.includes(cat);
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => onCategoryToggle(cat)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        isSelected
+                          ? "bg-tochigi-navy text-tochigi-yellow shadow-sm font-semibold"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 業種 */}
           <div>
