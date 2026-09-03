@@ -23,11 +23,11 @@ export default function Header() {
             HOME
           </Link>
           <a
-            href="https://twitter.com/kausaus_"
+            href="https://x.com/ur_oot"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 rounded-full hover:bg-yellow-300 transition-colors"
-            aria-label="Author Twitter"
+            aria-label="Author X (Twitter)"
           >
             <svg
               className="w-4 h-4 fill-current"

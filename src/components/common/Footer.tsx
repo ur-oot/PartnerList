@@ -24,11 +24,11 @@ export default function Footer() {
 
         <div className="flex items-center gap-3">
           <a
-            href="https://twitter.com/kausaus_"
+            href="https://x.com/ur_oot"
             target="_blank"
             rel="noopener noreferrer"
             className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-tochigi-navy hover:border-slate-400 transition-all"
-            aria-label="Author Twitter"
+            aria-label="Author X (Twitter)"
           >
             <svg
               className="w-4 h-4 fill-current"
@@ -43,12 +43,12 @@ export default function Footer() {
         <p className="text-xs text-slate-400">
           栃木SC非公式ファンプロジェクト | Created by{" "}
           <a
-            href="https://twitter.com/kausaus_"
+            href="https://x.com/ur_oot"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-slate-600"
           >
-            @kausaus_
+            @ur_oot
           </a>
         </p>
       </div>

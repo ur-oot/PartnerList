@@ -45,5 +45,5 @@ npm run start
 ```
 
 ## Author
-- Twitter: [@kausaus_](https://twitter.com/kausaus_)
+- X (Twitter): [@ur_oot](https://x.com/ur_oot)
 - GitHub: [ur-oot](https://github.com/ur-oot)
