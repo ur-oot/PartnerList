@@ -32,7 +32,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${company.name} | 栃木SC パートナー企業一覧`,
       description: company.description,
-      images: [company.image],
+      ...(company.image ? { images: [company.image] } : {}),
     },
   };
 }
@@ -68,14 +68,21 @@ export default async function CompanyDetailPage({
       <article className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         {/* ロゴ画像バナー */}
         <div className="relative w-full h-64 bg-slate-50 border-b border-slate-100 flex items-center justify-center p-8">
-          <Image
-            src={company.image}
-            alt={company.name}
-            fill
-            sizes="(max-width: 768px) 100vw, 768px"
-            className="object-contain p-6"
-            priority
-          />
+          {company.image ? (
+            <Image
+              src={company.image}
+              alt={company.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-contain p-6"
+              priority
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center text-slate-400 gap-2">
+              <Building2 className="w-12 h-12 stroke-1" />
+              <span className="text-xs font-medium text-slate-400">No Image</span>
+            </div>
+          )}
         </div>
 
         <div className="p-6 sm:p-10">
