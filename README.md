@@ -2,6 +2,9 @@
 
 [栃木SC](https://www.tochigisc.jp/sponsor/) を熱くサポートするパートナー企業・スポンサーをまとめた非公式ファンサービスです。
 
+## App URL
+https://elastic-shockley-e9a519.netlify.app
+
 ## 技術スタック (Tech Stack)
 - **Framework**: [Next.js 14](https://nextjs.org/) (App Router, SSG)
 - **Library**: [React 18](https://react.dev/)
