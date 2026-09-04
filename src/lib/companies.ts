@@ -39,3 +39,21 @@ export function getIndustries(companyList: Company[]): string[] {
   });
   return Array.from(set);
 }
+
+/**
+ * 指定IDの前後にあるパートナー企業を取得
+ */
+export async function getAdjacentCompanies(
+  currentId: number
+): Promise<{ prev: Company | null; next: Company | null }> {
+  const currentIndex = companies.findIndex((c) => c.id === currentId);
+  if (currentIndex === -1) {
+    return { prev: null, next: null };
+  }
+
+  const prev = currentIndex > 0 ? companies[currentIndex - 1] : null;
+  const next =
+    currentIndex < companies.length - 1 ? companies[currentIndex + 1] : null;
+
+  return { prev, next };
+}

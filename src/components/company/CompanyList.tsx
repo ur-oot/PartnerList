@@ -24,7 +24,7 @@ const TAB_DEFINITIONS: TabDefinition[] = [
   { key: "top", label: "トップパートナー", icon: "👑", match: (c) => c === "トップパートナー" },
   { key: "supplier", label: "サプライヤー", icon: "👕", match: (c) => c.includes("サプライヤー") },
   { key: "official", label: "オフィシャルパートナー", icon: "⭐", match: (c) => c === "オフィシャルパートナー" },
-  { key: "community", label: "メディア・地域支援", icon: "🤝", match: (c) => c.includes("メディア") || c.includes("地域") },
+  { key: "community", label: "メディア・地域支援", icon: "🤝", match: (c) => c.includes("メディア") || c.includes("地域") || c.includes("ラッピング") },
   { key: "support", label: "サポートカンパニー", icon: "📣", match: (c) => c === "サポートカンパニー" },
 ];
 

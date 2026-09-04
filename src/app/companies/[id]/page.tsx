@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getAllCompanies, getCompanyById } from "@/lib/companies";
-import { ArrowLeft, Globe, Building2, Share2 } from "lucide-react";
+import { getAllCompanies, getCompanyById, getAdjacentCompanies } from "@/lib/companies";
+import { ArrowLeft, Globe, Building2, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 
 interface CompanyDetailPageProps {
@@ -24,7 +24,12 @@ export async function generateMetadata({
   params,
 }: CompanyDetailPageProps): Promise<Metadata> {
   const company = await getCompanyById(Number(params.id));
-  if (!company) return {};
+
+  if (!company) {
+    return {
+      title: "企業が見つかりませんでした | 栃木SC パートナー企業一覧",
+    };
+  }
 
   return {
     title: `${company.name} | 栃木SC パートナー企業一覧`,
@@ -45,6 +50,8 @@ export default async function CompanyDetailPage({
   if (!company) {
     notFound();
   }
+
+  const { prev, next } = await getAdjacentCompanies(company.id);
 
   // 応援ツイート用リンク
   const tweetText = encodeURIComponent(
@@ -113,11 +120,11 @@ export default async function CompanyDetailPage({
               </dd>
             </div>
 
-            {/* 詳細カテゴリ */}
+            {/* 主な事業内容 */}
             {company.detail && (
               <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1">
-                <dt className="text-slate-400 font-medium">詳細</dt>
-                <dd className="sm:col-span-2 text-slate-800">
+                <dt className="text-slate-400 font-medium">主な事業内容</dt>
+                <dd className="sm:col-span-2 text-slate-800 leading-relaxed">
                   {company.detail}
                 </dd>
               </div>
@@ -187,17 +194,58 @@ export default async function CompanyDetailPage({
             </span>
 
             <a
-              href={`https://twitter.com/intent/tweet?text=${tweetText}`}
+              href={`https://x.com/intent/tweet?text=${tweetText}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-black font-semibold text-xs transition-colors shadow-sm"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span>X (Twitter) で応援ポストする</span>
+              <span>X で応援ポストする</span>
             </a>
           </div>
         </div>
       </article>
+
+      {/* 前後企業ナビゲーション */}
+      <nav aria-label="前後の企業" className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {prev ? (
+          <Link
+            href={`/companies/${prev.id}`}
+            className="group flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all text-left"
+          >
+            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-tochigi-yellow group-hover:text-tochigi-navy transition-colors shrink-0">
+              <ChevronLeft className="w-4 h-4" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="block text-[11px] text-slate-400 font-medium">前の企業</span>
+              <span className="block text-xs font-bold text-slate-800 truncate group-hover:text-tochigi-navy">
+                {prev.name}
+              </span>
+            </div>
+          </Link>
+        ) : (
+          <div className="hidden sm:block" />
+        )}
+
+        {next ? (
+          <Link
+            href={`/companies/${next.id}`}
+            className="group flex items-center justify-end gap-3 p-4 bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all text-right sm:col-start-2"
+          >
+            <div className="min-w-0 flex-1">
+              <span className="block text-[11px] text-slate-400 font-medium">次の企業</span>
+              <span className="block text-xs font-bold text-slate-800 truncate group-hover:text-tochigi-navy">
+                {next.name}
+              </span>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-tochigi-yellow group-hover:text-tochigi-navy transition-colors shrink-0">
+              <ChevronRight className="w-4 h-4" />
+            </div>
+          </Link>
+        ) : (
+          <div className="hidden sm:block" />
+        )}
+      </nav>
     </main>
   );
 }
