@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllCompanies, getCompanyById, getAdjacentCompanies } from "@/lib/companies";
+import { SITE_URL } from "@/lib/constants";
 import { ArrowLeft, Globe, Building2, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -31,10 +32,23 @@ export async function generateMetadata({
     };
   }
 
+  const pageUrl = `${SITE_URL}/companies/${company.id}`;
+
   return {
     title: `${company.name} | 栃木SC パートナー企業一覧`,
     description: `${company.name}（${company.category}）の企業情報。${company.description}`,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
+      title: `${company.name} | 栃木SC パートナー企業一覧`,
+      description: company.description,
+      url: pageUrl,
+      type: "website",
+      ...(company.image ? { images: [company.image] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
       title: `${company.name} | 栃木SC パートナー企業一覧`,
       description: company.description,
       ...(company.image ? { images: [company.image] } : {}),
@@ -58,8 +72,31 @@ export default async function CompanyDetailPage({
     `栃木SCパートナー企業の「${company.name}」さんをチェックしました！⚽️🟡\nいつも栃木SCへの熱いサポートありがとうございます！\n#栃木SC #全員戦力\n`
   );
 
+  // 構造化データ (schema.org/Organization)
+  const sameAs: string[] = [];
+  if (company.officialsite) sameAs.push(company.officialsite);
+  if (company.twitter) sameAs.push(`https://x.com/${company.twitter}`);
+  if (company.instagram) sameAs.push(`https://instagram.com/${company.instagram}`);
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: company.name,
+    ...(company.officialsite ? { url: company.officialsite } : {}),
+    ...(company.image ? { image: company.image } : {}),
+    ...(company.description ? { description: company.description } : {}),
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+    ...(company.detail ? { knowsAbout: company.detail } : {}),
+  };
+
   return (
     <main className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+      {/* 構造化データ (JSON-LD) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+
       {/* 戻るボタン */}
       <div className="mb-6">
         <Link
