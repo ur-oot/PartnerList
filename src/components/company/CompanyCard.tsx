@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Company } from "@/types/company";
+import { getXProfileUrl, getInstagramProfileUrl } from "@/lib/constants";
 import { ExternalLink, ArrowRight, Building2 } from "lucide-react";
 
 interface CompanyCardProps {
@@ -79,7 +80,7 @@ export default function CompanyCard({ company }: CompanyCardProps) {
 
             {company.twitter && (
               <a
-                href={`https://x.com/${company.twitter}`}
+                href={getXProfileUrl(company.twitter)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-1 text-slate-400 hover:text-black transition-colors rounded hover:bg-slate-100"
@@ -94,7 +95,7 @@ export default function CompanyCard({ company }: CompanyCardProps) {
 
             {company.instagram && (
               <a
-                href={`https://instagram.com/${company.instagram}`}
+                href={getInstagramProfileUrl(company.instagram)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-1 text-slate-400 hover:text-pink-600 transition-colors rounded hover:bg-pink-50"

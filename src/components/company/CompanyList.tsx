@@ -6,27 +6,12 @@ import CompanyCard from "./CompanyCard";
 import CompanySearchFilter from "./CompanySearchFilter";
 import CategoryTabs, { CategoryTabKey, CategoryTabItem } from "./CategoryTabs";
 import { getCategories, getIndustries } from "@/lib/companies";
+import { TAB_DEFINITIONS, TabDefinition } from "@/lib/constants";
 import { SearchX } from "lucide-react";
 
 interface CompanyListProps {
   initialCompanies: Company[];
 }
-
-interface TabDefinition {
-  key: CategoryTabKey;
-  label: string;
-  icon: string;
-  match: (category: string) => boolean;
-}
-
-const TAB_DEFINITIONS: TabDefinition[] = [
-  { key: "all", label: "すべて", icon: "⚽️", match: () => true },
-  { key: "top", label: "トップパートナー", icon: "👑", match: (c) => c === "トップパートナー" },
-  { key: "supplier", label: "サプライヤー", icon: "👕", match: (c) => c.includes("サプライヤー") },
-  { key: "official", label: "オフィシャルパートナー", icon: "⭐", match: (c) => c === "オフィシャルパートナー" },
-  { key: "community", label: "メディア・地域支援", icon: "🤝", match: (c) => c.includes("メディア") || c.includes("地域") || c.includes("ラッピング") },
-  { key: "support", label: "サポートカンパニー", icon: "📣", match: (c) => c === "サポートカンパニー" },
-];
 
 export default function CompanyList({ initialCompanies }: CompanyListProps) {
   const [activeTab, setActiveTab] = useState<CategoryTabKey>("all");
@@ -117,33 +102,41 @@ export default function CompanyList({ initialCompanies }: CompanyListProps) {
         onSelectTab={(key) => setActiveTab(key)}
       />
 
-      {/* 企業一覧グリッド（カードの大きさは統一） */}
-      {filteredCompanies.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCompanies.map((company) => (
-            <CompanyCard key={company.id} company={company} />
-          ))}
-        </div>
-      ) : (
-        /* 検索結果 0 件時 */
-        <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center my-8">
-          <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-            <SearchX className="w-6 h-6" />
+      {/* 企業一覧タブパネル */}
+      <div
+        role="tabpanel"
+        id={`tabpanel-${activeTab}`}
+        aria-labelledby={`tab-${activeTab}`}
+        tabIndex={0}
+        className="outline-none"
+      >
+        {filteredCompanies.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCompanies.map((company) => (
+              <CompanyCard key={company.id} company={company} />
+            ))}
           </div>
-          <h3 className="text-base font-bold text-slate-700 mb-1">
-            一致するパートナー企業が見つかりませんでした
-          </h3>
-          <p className="text-xs text-slate-500 mb-6">
-            検索キーワードを変えるか、タブや絞り込み条件をリセットしてお試しください。
-          </p>
-          <button
-            onClick={handleReset}
-            className="px-4 py-2 rounded-xl bg-tochigi-yellow text-tochigi-navy font-bold text-xs hover:bg-yellow-400 transition-colors shadow-sm"
-          >
-            検索条件をクリアする
-          </button>
-        </div>
-      )}
+        ) : (
+          /* 検索結果 0 件時 */
+          <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center my-8">
+            <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+              <SearchX className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-700 mb-1">
+              一致するパートナー企業が見つかりませんでした
+            </h3>
+            <p className="text-xs text-slate-500 mb-6">
+              検索キーワードを変えるか、タブや絞り込み条件をリセットしてお試しください。
+            </p>
+            <button
+              onClick={handleReset}
+              className="px-4 py-2 rounded-xl bg-tochigi-yellow text-tochigi-navy font-bold text-xs hover:bg-yellow-400 transition-colors shadow-sm"
+            >
+              検索条件をクリアする
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
