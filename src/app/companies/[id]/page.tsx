@@ -120,11 +120,11 @@ export default async function CompanyDetailPage({
               </dd>
             </div>
 
-            {/* 詳細カテゴリ */}
+            {/* 主な事業内容 */}
             {company.detail && (
               <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1">
-                <dt className="text-slate-400 font-medium">詳細</dt>
-                <dd className="sm:col-span-2 text-slate-800">
+                <dt className="text-slate-400 font-medium">主な事業内容</dt>
+                <dd className="sm:col-span-2 text-slate-800 leading-relaxed">
                   {company.detail}
                 </dd>
               </div>
