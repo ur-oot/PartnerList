@@ -4,10 +4,29 @@ import Footer from "@/components/common/Footer";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import "./globals.css";
 
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
+
 export const metadata: Metadata = {
-  title: "栃木SC パートナー企業一覧 | Tochigi SC Partner List",
-  description: "栃木サッカークラブ（栃木SC）を支えるパートナー企業・スポンサーの検索・まとめサービスです。",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: "%s | 栃木SC パートナー企業一覧",
+  },
+  description: SITE_DESCRIPTION,
   keywords: ["栃木SC", "パートナー", "スポンサー", "Jリーグ", "サッカー", "栃木"],
+  openGraph: {
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: "栃木SC パートナー企業一覧",
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

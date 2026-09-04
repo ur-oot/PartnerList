@@ -1,12 +1,28 @@
 import { getAllCompanies } from "@/lib/companies";
 import CompanyList from "@/components/company/CompanyList";
-import { Shield, Sparkles } from "lucide-react";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
+import { Shield } from "lucide-react";
 
 export default async function HomePage() {
   const companies = await getAllCompanies();
 
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
+    inLanguage: "ja",
+  };
+
   return (
     <main className="max-w-6xl mx-auto px-4 py-8 sm:py-12 sm:px-6">
+      {/* 構造化データ (WebSite) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+
       {/* ヒーローセクション */}
       <section className="bg-gradient-to-br from-tochigi-navy via-[#02182b] to-tochigi-navy text-white rounded-3xl p-6 sm:p-10 shadow-lg mb-8 relative overflow-hidden">
         <div className="absolute -right-12 -top-12 w-48 h-48 bg-tochigi-yellow/10 rounded-full blur-2xl pointer-events-none" />
