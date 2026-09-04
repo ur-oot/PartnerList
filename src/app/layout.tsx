@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { FavoritesProvider } from "@/context/FavoritesContext";
+
 export default function RootLayout({
   children,
 }: {
@@ -37,12 +39,14 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className="flex flex-col min-h-screen bg-slate-50 text-slate-900 antialiased">
-        <Header />
-        <div className="flex-1">
-          {children}
-        </div>
-        <Footer />
-        <ScrollToTop />
+        <FavoritesProvider>
+          <Header />
+          <div className="flex-1">
+            {children}
+          </div>
+          <Footer />
+          <ScrollToTop />
+        </FavoritesProvider>
       </body>
     </html>
   );

@@ -8,6 +8,7 @@ import {
   getInstagramProfileUrl,
   getTweetIntentUrl,
 } from "@/lib/constants";
+import FavoriteButton from "@/components/company/FavoriteButton";
 import { ArrowLeft, Globe, Building2, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -100,8 +101,8 @@ export default async function CompanyDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
 
-      {/* 戻るボタン */}
-      <div className="mb-6">
+      {/* 戻るボタン & お気に入りボタン */}
+      <div className="mb-6 flex items-center justify-between gap-4">
         <Link
           href="/"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tochigi-yellow text-tochigi-navy font-bold text-sm hover:bg-yellow-400 transition-colors shadow-sm"
@@ -109,12 +110,26 @@ export default async function CompanyDetailPage({
           <ArrowLeft className="w-4 h-4" />
           <span>一覧に戻る</span>
         </Link>
+
+        <FavoriteButton
+          companyId={company.id}
+          companyName={company.name}
+          variant="button"
+        />
       </div>
 
       {/* 企業詳細カード */}
       <article className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         {/* ロゴ画像バナー */}
         <div className="relative w-full h-64 bg-slate-50 border-b border-slate-100 flex items-center justify-center p-8">
+          <div className="absolute top-4 right-4 z-10">
+            <FavoriteButton
+              companyId={company.id}
+              companyName={company.name}
+              variant="icon"
+            />
+          </div>
+
           {company.image ? (
             <Image
               src={company.image}

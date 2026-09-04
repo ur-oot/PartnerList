@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Company } from "@/types/company";
 import { getXProfileUrl, getInstagramProfileUrl } from "@/lib/constants";
+import FavoriteButton from "./FavoriteButton";
 import { ExternalLink, ArrowRight, Building2 } from "lucide-react";
 
 interface CompanyCardProps {
@@ -19,6 +20,11 @@ export default function CompanyCard({ company }: CompanyCardProps) {
     <article className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col h-full overflow-hidden">
       {/* 企業ロゴエリア */}
       <div className="relative w-full h-44 bg-slate-50 border-b border-slate-100 flex items-center justify-center p-6">
+        {/* お気に入りボタン */}
+        <div className="absolute top-3 right-3 z-20">
+          <FavoriteButton companyId={company.id} companyName={company.name} variant="icon" />
+        </div>
+
         {!hasError && company.image ? (
           <Image
             src={imgSrc}
