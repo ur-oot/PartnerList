@@ -7,7 +7,8 @@ import CompanySearchFilter from "./CompanySearchFilter";
 import CategoryTabs, { CategoryTabKey, CategoryTabItem } from "./CategoryTabs";
 import { getCategories, getIndustries } from "@/lib/companies";
 import { TAB_DEFINITIONS, TabDefinition } from "@/lib/constants";
-import { SearchX } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
+import { SearchX, Star } from "lucide-react";
 
 interface CompanyListProps {
   initialCompanies: Company[];
@@ -17,6 +18,7 @@ export default function CompanyList({ initialCompanies }: CompanyListProps) {
   const [activeTab, setActiveTab] = useState<CategoryTabKey>("all");
   const [keyword, setKeyword] = useState("");
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const { favorites } = useFavorites();
 
   // 業種一覧
   const industries = useMemo(() => getIndustries(initialCompanies).filter(Boolean), [initialCompanies]);
@@ -27,9 +29,12 @@ export default function CompanyList({ initialCompanies }: CompanyListProps) {
       key: tab.key,
       label: tab.label,
       icon: tab.icon,
-      count: initialCompanies.filter((c) => tab.match(c.category)).length,
+      count:
+        tab.key === "favorite"
+          ? favorites.length
+          : initialCompanies.filter((c) => tab.match(c.category)).length,
     }));
-  }, [initialCompanies]);
+  }, [initialCompanies, favorites]);
 
   // 業種トグル
   const handleIndustryToggle = (ind: string) => {
@@ -52,7 +57,11 @@ export default function CompanyList({ initialCompanies }: CompanyListProps) {
 
     return initialCompanies.filter((company) => {
       // 1. カテゴリータブ判定
-      if (currentTabDef && !currentTabDef.match(company.category)) {
+      if (activeTab === "favorite") {
+        if (!favorites.includes(company.id)) {
+          return false;
+        }
+      } else if (currentTabDef && !currentTabDef.match(company.category)) {
         return false;
       }
 
@@ -76,7 +85,7 @@ export default function CompanyList({ initialCompanies }: CompanyListProps) {
 
       return true;
     });
-  }, [initialCompanies, activeTab, keyword, selectedIndustries]);
+  }, [initialCompanies, activeTab, keyword, selectedIndustries, favorites]);
 
   return (
     <div>
@@ -115,6 +124,25 @@ export default function CompanyList({ initialCompanies }: CompanyListProps) {
             {filteredCompanies.map((company) => (
               <CompanyCard key={company.id} company={company} />
             ))}
+          </div>
+        ) : activeTab === "favorite" && favorites.length === 0 ? (
+          /* お気に入り未登録時 */
+          <div className="bg-white rounded-2xl border border-dashed border-amber-300/80 p-12 text-center my-8 bg-amber-50/20">
+            <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-500 flex items-center justify-center mx-auto mb-3">
+              <Star className="w-6 h-6 fill-current" />
+            </div>
+            <h3 className="text-base font-bold text-slate-800 mb-1">
+              お気に入りのパートナー企業が登録されていません
+            </h3>
+            <p className="text-xs text-slate-600 mb-6 max-w-md mx-auto leading-relaxed">
+              企業カードや詳細ページにある ★ マークをクリックすると、応援・利用しているパートナー企業をお気に入りとしてここに保存できます。
+            </p>
+            <button
+              onClick={() => setActiveTab("all")}
+              className="px-4 py-2 rounded-xl bg-tochigi-navy text-tochigi-yellow font-bold text-xs hover:bg-slate-800 transition-colors shadow-sm"
+            >
+              すべての企業を見る
+            </button>
           </div>
         ) : (
           /* 検索結果 0 件時 */
