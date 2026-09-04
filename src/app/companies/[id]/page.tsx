@@ -2,7 +2,12 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllCompanies, getCompanyById, getAdjacentCompanies } from "@/lib/companies";
-import { SITE_URL } from "@/lib/constants";
+import {
+  SITE_URL,
+  getXProfileUrl,
+  getInstagramProfileUrl,
+  getTweetIntentUrl,
+} from "@/lib/constants";
 import { ArrowLeft, Globe, Building2, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -67,16 +72,14 @@ export default async function CompanyDetailPage({
 
   const { prev, next } = await getAdjacentCompanies(company.id);
 
-  // 応援ツイート用リンク
-  const tweetText = encodeURIComponent(
-    `栃木SCパートナー企業の「${company.name}」さんをチェックしました！⚽️🟡\nいつも栃木SCへの熱いサポートありがとうございます！\n#栃木SC #全員戦力\n`
-  );
+  // 応援ポスト用テキスト
+  const tweetText = `栃木SCパートナー企業の「${company.name}」さんをチェックしました！⚽️🟡\nいつも栃木SCへの熱いサポートありがとうございます！\n#栃木SC #全員戦力\n`;
 
   // 構造化データ (schema.org/Organization)
   const sameAs: string[] = [];
   if (company.officialsite) sameAs.push(company.officialsite);
-  if (company.twitter) sameAs.push(`https://x.com/${company.twitter}`);
-  if (company.instagram) sameAs.push(`https://instagram.com/${company.instagram}`);
+  if (company.twitter) sameAs.push(getXProfileUrl(company.twitter));
+  if (company.instagram) sameAs.push(getInstagramProfileUrl(company.instagram));
 
   const organizationJsonLd = {
     "@context": "https://schema.org",
@@ -192,7 +195,7 @@ export default async function CompanyDetailPage({
                 <dd className="sm:col-span-2 flex items-center gap-4">
                   {company.twitter && (
                     <a
-                      href={`https://twitter.com/${company.twitter}`}
+                      href={getXProfileUrl(company.twitter)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:border-slate-400 hover:text-black transition-colors font-medium text-xs"
@@ -210,7 +213,7 @@ export default async function CompanyDetailPage({
 
                   {company.instagram && (
                     <a
-                      href={`https://instagram.com/${company.instagram}`}
+                      href={getInstagramProfileUrl(company.instagram)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-pink-700 hover:bg-pink-100 transition-colors font-medium text-xs"
@@ -231,7 +234,7 @@ export default async function CompanyDetailPage({
             </span>
 
             <a
-              href={`https://x.com/intent/tweet?text=${tweetText}`}
+              href={getTweetIntentUrl(tweetText)}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-black font-semibold text-xs transition-colors shadow-sm"
