@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getAllCompanies } from "@/lib/companies";
 import CompanyList from "@/components/company/CompanyList";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
@@ -45,7 +46,9 @@ export default async function HomePage() {
       </section>
 
       {/* 企業一覧・検索・フィルター */}
-      <CompanyList initialCompanies={companies} />
+      <Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-slate-400">読み込み中...</div>}>
+        <CompanyList initialCompanies={companies} />
+      </Suspense>
     </main>
   );
 }

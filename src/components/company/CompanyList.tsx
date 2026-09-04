@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { Company } from "@/types/company";
 import CompanyCard from "./CompanyCard";
 import CompanySearchFilter from "./CompanySearchFilter";
 import CategoryTabs, { CategoryTabKey, CategoryTabItem } from "./CategoryTabs";
-import { getCategories, getIndustries } from "@/lib/companies";
-import { TAB_DEFINITIONS, TabDefinition } from "@/lib/constants";
+import { getIndustries } from "@/lib/companies";
+import { TAB_DEFINITIONS } from "@/lib/constants";
 import { useFavorites } from "@/hooks/useFavorites";
 import { SearchX, Star } from "lucide-react";
 
@@ -14,11 +15,89 @@ interface CompanyListProps {
   initialCompanies: Company[];
 }
 
+const VALID_TAB_KEYS: CategoryTabKey[] = [
+  "all",
+  "favorite",
+  "top",
+  "supplier",
+  "official",
+  "community",
+  "support",
+];
+
 export default function CompanyList({ initialCompanies }: CompanyListProps) {
-  const [activeTab, setActiveTab] = useState<CategoryTabKey>("all");
-  const [keyword, setKeyword] = useState("");
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+
+  // URLクエリパラメータから初期状態を取得
+  const initialTab = useMemo<CategoryTabKey>(() => {
+    const tab = searchParams.get("tab") as CategoryTabKey;
+    return VALID_TAB_KEYS.includes(tab) ? tab : "all";
+  }, [searchParams]);
+
+  const initialKeyword = useMemo(() => {
+    return searchParams.get("q") || "";
+  }, [searchParams]);
+
+  const initialIndustries = useMemo(() => {
+    const indParam = searchParams.get("industry");
+    return indParam ? indParam.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  }, [searchParams]);
+
+  const [activeTab, setActiveTab] = useState<CategoryTabKey>(initialTab);
+  const [keyword, setKeyword] = useState(initialKeyword);
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>(initialIndustries);
   const { favorites } = useFavorites();
+  const isFirstRender = useRef(true);
+
+  // URLクエリパラメータの同期（スクロール位置を維持しつつreplaceState）
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const params = new URLSearchParams();
+    if (activeTab && activeTab !== "all") {
+      params.set("tab", activeTab);
+    }
+    if (keyword.trim()) {
+      params.set("q", keyword.trim());
+    }
+    if (selectedIndustries.length > 0) {
+      params.set("industry", selectedIndustries.join(","));
+    }
+
+    const queryString = params.toString();
+    const newSearch = queryString ? `?${queryString}` : "";
+    const currentSearch = window.location.search;
+
+    if (newSearch !== currentSearch) {
+      const newUrl = `${window.location.pathname}${newSearch}`;
+      window.history.replaceState(null, "", newUrl);
+    }
+  }, [activeTab, keyword, selectedIndustries]);
+
+  // ブラウザの戻る・進む（popstate）時のURL同期
+  useEffect(() => {
+    const handlePopState = () => {
+      const currentParams = new URLSearchParams(window.location.search);
+      const tab = currentParams.get("tab") as CategoryTabKey;
+      setActiveTab(VALID_TAB_KEYS.includes(tab) ? tab : "all");
+
+      const q = currentParams.get("q") || "";
+      setKeyword(q);
+
+      const indParam = currentParams.get("industry");
+      setSelectedIndustries(
+        indParam ? indParam.split(",").map((s) => s.trim()).filter(Boolean) : []
+      );
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   // 業種一覧
   const industries = useMemo(() => getIndustries(initialCompanies).filter(Boolean), [initialCompanies]);
