@@ -38,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="flex flex-col min-h-screen bg-slate-50 text-slate-900 antialiased">
+      <body className="flex flex-col min-h-screen stadium-mesh-bg bg-[#f8fafc] text-slate-900 antialiased">
         <FavoritesProvider>
           <Header />
           <div className="flex-1">

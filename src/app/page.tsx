@@ -24,24 +24,61 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
 
-      {/* ヒーローセクション */}
-      <section className="bg-gradient-to-br from-tochigi-navy via-[#02182b] to-tochigi-navy text-white rounded-3xl p-6 sm:p-10 shadow-lg mb-8 relative overflow-hidden">
-        <div className="absolute -right-12 -top-12 w-48 h-48 bg-tochigi-yellow/10 rounded-full blur-2xl pointer-events-none" />
+      {/* ヒーローセクション: THE ARENA CINEMATIC HERO */}
+      <section className="relative rounded-3xl p-6 sm:p-12 mb-10 overflow-hidden bg-[#040915] text-white border border-white/[0.08] shadow-2xl">
+        {/* 背景ウォーターマーク・タイポグラフィ */}
+        <div className="absolute -right-6 -bottom-10 select-none pointer-events-none opacity-[0.03] text-right font-black text-7xl sm:text-9xl tracking-tighter leading-none text-white whitespace-nowrap">
+          TOCHIGI SC<br />PARTNERS
+        </div>
 
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tochigi-yellow text-tochigi-navy font-extrabold text-xs mb-4 shadow-sm">
+        {/* スタジアム投光器（Floodlights）アンビエントライティング（ブリージング・オーロラ） */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-tochigi-yellow/20 rounded-full blur-3xl pointer-events-none animate-aurora-slow" />
+        <div className="absolute top-1/2 -right-24 w-80 h-80 bg-tochigi-blue/25 rounded-full blur-3xl pointer-events-none animate-aurora-reverse" />
+        <div className="absolute -bottom-20 left-1/3 w-64 h-64 bg-amber-500/15 rounded-full blur-2xl pointer-events-none animate-aurora-slow" />
+
+        <div className="relative z-10 max-w-3xl">
+          {/* オフィシャル・アーカイブ・バッジ */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] text-tochigi-yellow text-xs font-bold mb-5 backdrop-blur-md shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-tochigi-yellow animate-pulse" />
             <Shield className="w-3.5 h-3.5 fill-current" />
-            TOCHIGI SC OFFICIAL PARTNERS
+            <span className="tracking-widest font-mono text-[11px] uppercase">
+              Official Partners Archive
+            </span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">
-            栃木SC パートナー企業一覧
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 text-white leading-[1.15]">
+            栃木SCを支える、<br className="hidden sm:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-tochigi-yellow via-yellow-200 to-amber-300">
+              誇り高きパートナー企業
+            </span>
           </h1>
 
-          <p className="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
-            栃木サッカークラブを支えてくださるパートナー・スポンサー企業の皆様です。
-            サポーターの皆様の日常のお買い物やサービス利用の参考にぜひご活用ください！
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6 max-w-2xl font-normal">
+            ピッチの内外でクラブと共に闘い続けるパートナー・スポンサー企業の皆様。
+            サポーターの日常の消費やビジネスでの利用を通じて、地域とクラブの未来を共創しましょう。
           </p>
+
+          {/* クイックスタッツピル */}
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-xs">
+              <span className="text-slate-400">掲載企業数</span>
+              <strong className="text-white font-mono font-bold text-sm">
+                {companies.length}
+              </strong>
+              <span className="text-slate-400">社</span>
+            </div>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-xs">
+              <span className="text-slate-400">カテゴリー</span>
+              <strong className="text-tochigi-yellow font-mono font-bold text-sm">
+                7
+              </strong>
+              <span className="text-slate-400">区分</span>
+            </div>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-xs">
+              <span className="text-slate-400">推しパートナー機能</span>
+              <span className="text-amber-400 font-bold">★ 保存対応</span>
+            </div>
+          </div>
         </div>
       </section>
 

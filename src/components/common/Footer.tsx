@@ -2,12 +2,21 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mt-auto border-t border-slate-200 bg-white py-8 text-center text-slate-600 text-sm">
-      <div className="max-w-6xl mx-auto px-4 flex flex-col items-center gap-4">
-        <ul className="flex items-center gap-6 font-medium">
+    <footer className="mt-auto border-t border-slate-200/80 bg-white/70 backdrop-blur-md py-10 text-center text-slate-500 text-xs">
+      <div className="max-w-6xl mx-auto px-4 flex flex-col items-center gap-5">
+        <div className="flex items-center gap-2">
+          <span className="w-6 h-6 rounded-lg bg-tochigi-navy text-tochigi-yellow flex items-center justify-center font-black text-[10px]">
+            TSC
+          </span>
+          <span className="font-bold text-slate-800 tracking-tight text-sm">
+            栃木SC パートナー企業一覧
+          </span>
+        </div>
+
+        <ul className="flex items-center gap-6 font-medium text-xs text-slate-600">
           <li>
             <Link href="/" className="hover:text-tochigi-navy transition-colors">
-              Home
+              トップページ
             </Link>
           </li>
           <li>
@@ -27,11 +36,11 @@ export default function Footer() {
             href="https://x.com/ur_oot"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-tochigi-navy hover:border-slate-400 transition-all"
+            className="w-8 h-8 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-500 hover:text-black hover:border-slate-400 hover:shadow-sm transition-all"
             aria-label="Author X (Twitter)"
           >
             <svg
-              className="w-4 h-4 fill-current"
+              className="w-3.5 h-3.5 fill-current"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
@@ -40,13 +49,13 @@ export default function Footer() {
           </a>
         </div>
 
-        <p className="text-xs text-slate-400">
-          栃木SC非公式ファンプロジェクト | Created by{" "}
+        <p className="text-[11px] text-slate-400 tracking-wider">
+          栃木SC非公式ファンプロジェクト | Crafted by{" "}
           <a
             href="https://x.com/ur_oot"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-slate-600"
+            className="text-slate-600 hover:underline font-medium"
           >
             @ur_oot
           </a>

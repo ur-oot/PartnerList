@@ -31,7 +31,7 @@ export default function ScrollToTop() {
       type="button"
       onClick={scrollToTop}
       aria-label="ページ先頭に戻る"
-      className={`fixed bottom-6 right-6 z-40 flex items-center justify-center w-11 h-11 rounded-full bg-slate-900/90 text-white shadow-lg border border-slate-700/50 backdrop-blur-sm transition-all duration-300 hover:bg-tochigi-yellow hover:text-tochigi-navy hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-tochigi-yellow focus:ring-offset-2 ${
+      className={`fixed bottom-6 right-6 z-40 flex items-center justify-center w-12 h-12 rounded-2xl bg-[#040915]/90 text-white shadow-xl border border-white/15 backdrop-blur-xl transition-all duration-300 hover:bg-tochigi-yellow hover:text-slate-950 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-tochigi-yellow hover:shadow-glow-yellow ${
         isVisible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none"
