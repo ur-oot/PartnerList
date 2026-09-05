@@ -4,12 +4,174 @@
 
 :root {
   --background: #f8fafc;
-  --foreground: #00203d;
+  --foreground: #020b18;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #fff100;
+  color: #00203d;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background-color: var(--background);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   min-height: 100vh;
+}
+
+/* 微細なスタジアム・アンビエント背景 */
+.stadium-mesh-bg {
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(255, 241, 0, 0.04) 0px, transparent 50%),
+    radial-gradient(at 85% 20%, rgba(0, 85, 150, 0.06) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(0, 32, 61, 0.03) 0px, transparent 60%);
+}
+
+/* カードの光彩ボーダー */
+.specular-card {
+  position: relative;
+  background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.specular-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(226, 232, 240, 0.6) 50%, rgba(203, 213, 225, 0.3) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* スクロールバー非表示ユーティリティ */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 1. マウス追従スポットライト (Radial Specular Spotlight) */
+.spotlight-card {
+  position: relative;
+}
+
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 241, 0, 0.2) 0%,
+    rgba(254, 240, 138, 0.1) 40%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 30; /* コンテンツの上に光を重ねる */
+}
+
+.spotlight-card:hover::after {
+  opacity: 1;
+}
+
+/* 2. スターバースト・パーティクル & 星バウンス (Star Burst Explosion) */
+@keyframes star-pop-bounce {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.65);
+  }
+  60% {
+    transform: scale(1.4);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-star-pop {
+  animation: star-pop-bounce 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+@keyframes particle-burst-fly {
+  0% {
+    transform: translate(0, 0) scale(1.2);
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--burst-x, 0px), var(--burst-y, 0px)) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-particle {
+  animation: particle-burst-fly 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* 3. ブリージング・オーロラ (Breathing Floodlights) - 視認性の高いダイナミックな呼吸 */
+@keyframes aurora-breathe {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.18;
+  }
+  50% {
+    transform: scale(1.35) translate(20px, -12px);
+    opacity: 0.45;
+  }
+}
+
+.animate-aurora-slow {
+  animation: aurora-breathe 4.5s ease-in-out infinite;
+}
+
+@keyframes aurora-breathe-reverse {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.3) translate(-25px, 15px);
+    opacity: 0.48;
+  }
+}
+
+.animate-aurora-reverse {
+  animation: aurora-breathe-reverse 5.5s ease-in-out infinite;
+}
+
+/* 4. カードの出現アニメーション (Entrance Fade Up) */
+@keyframes card-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-card-enter {
+  animation: card-fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
