@@ -94,7 +94,7 @@ export default async function CompanyDetailPage({
   };
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+    <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
       {/* 構造化データ (JSON-LD) */}
       <script
         type="application/ld+json"
@@ -105,9 +105,9 @@ export default async function CompanyDetailPage({
       <div className="mb-6 flex items-center justify-between gap-4">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tochigi-yellow text-tochigi-navy font-bold text-sm hover:bg-yellow-400 transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/90 backdrop-blur-md text-slate-700 hover:text-slate-950 font-bold text-xs border border-slate-200/80 hover:bg-white transition-all shadow-sm group"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
           <span>一覧に戻る</span>
         </Link>
 
@@ -118,10 +118,13 @@ export default async function CompanyDetailPage({
         />
       </div>
 
-      {/* 企業詳細カード */}
-      <article className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-        {/* ロゴ画像バナー */}
-        <div className="relative w-full h-64 bg-slate-50 border-b border-slate-100 flex items-center justify-center p-8">
+      {/* 企業詳細カード: THE ARENA SHOWCASE */}
+      <article className="specular-card bg-white rounded-3xl border border-slate-200/80 shadow-card-modern overflow-hidden">
+        {/* ロゴ画像バナー: Floating Art-piece Exhibition */}
+        <div className="relative w-full h-64 sm:h-72 bg-gradient-to-b from-slate-50 via-white to-slate-50/60 border-b border-slate-100 flex items-center justify-center p-8 overflow-hidden">
+          {/* アンビエントスポットライト */}
+          <div className="absolute inset-0 bg-radial-gradient from-tochigi-yellow/10 via-transparent to-transparent pointer-events-none" />
+
           <div className="absolute top-4 right-4 z-10">
             <FavoriteButton
               companyId={company.id}
@@ -136,13 +139,13 @@ export default async function CompanyDetailPage({
               alt={company.name}
               fill
               sizes="(max-width: 768px) 100vw, 768px"
-              className="object-contain p-6"
+              className="object-contain p-8 drop-shadow-sm hover:scale-105 transition-transform duration-300"
               priority
             />
           ) : (
             <div className="flex flex-col items-center justify-center text-slate-400 gap-2">
-              <Building2 className="w-12 h-12 stroke-1" />
-              <span className="text-xs font-medium text-slate-400">No Image</span>
+              <Building2 className="w-14 h-14 stroke-1 text-slate-300" />
+              <span className="text-xs font-mono text-slate-400 tracking-wider">OFFICIAL PARTNER</span>
             </div>
           )}
         </div>
@@ -150,26 +153,26 @@ export default async function CompanyDetailPage({
         <div className="p-6 sm:p-10">
           {/* カテゴリ & 企業名 */}
           <div className="mb-6">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-tochigi-yellow/30 text-tochigi-navy border border-tochigi-yellow/60 mb-3">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#040915] text-tochigi-yellow border border-white/10 shadow-sm mb-3">
               {company.category}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
               {company.name}
             </h1>
           </div>
 
-          {/* 概要文 */}
+          {/* 概要文（エディトリアル引用スタイル） */}
           {company.description && (
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-8 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <div className="text-sm sm:text-base text-slate-700 leading-relaxed mb-8 bg-slate-50/80 p-5 rounded-2xl border-l-4 border-tochigi-yellow border-y border-r border-slate-200/80 font-normal">
               {company.description}
-            </p>
+            </div>
           )}
 
           {/* 詳細スペックリスト */}
           <dl className="divide-y divide-slate-100 text-sm">
             {/* 業種 */}
-            <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1">
-              <dt className="text-slate-400 font-medium">業種</dt>
+            <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1 items-baseline">
+              <dt className="text-slate-400 font-mono text-xs uppercase tracking-wider">業種</dt>
               <dd className="sm:col-span-2 text-slate-800 font-medium">
                 {company.industries || "ー"}
               </dd>
@@ -178,8 +181,8 @@ export default async function CompanyDetailPage({
             {/* 主な事業内容 */}
             {company.detail && (
               <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1">
-                <dt className="text-slate-400 font-medium">主な事業内容</dt>
-                <dd className="sm:col-span-2 text-slate-800 leading-relaxed">
+                <dt className="text-slate-400 font-mono text-xs uppercase tracking-wider">主な事業内容</dt>
+                <dd className="sm:col-span-2 text-slate-700 leading-relaxed font-normal">
                   {company.detail}
                 </dd>
               </div>
@@ -187,14 +190,14 @@ export default async function CompanyDetailPage({
 
             {/* オフィシャルサイト */}
             {company.officialsite && (
-              <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1">
-                <dt className="text-slate-400 font-medium">オフィシャルサイト</dt>
+              <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1 items-baseline">
+                <dt className="text-slate-400 font-mono text-xs uppercase tracking-wider">公式サイト</dt>
                 <dd className="sm:col-span-2">
                   <a
                     href={company.officialsite}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline break-all inline-flex items-center gap-1 font-medium"
+                    className="text-tochigi-blue hover:text-blue-700 hover:underline break-all inline-flex items-center gap-1.5 font-medium"
                   >
                     <Globe className="w-4 h-4 shrink-0" />
                     <span>{company.officialsite}</span>
@@ -206,14 +209,14 @@ export default async function CompanyDetailPage({
             {/* 公式SNS */}
             {(company.twitter || company.instagram) && (
               <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-1 items-center">
-                <dt className="text-slate-400 font-medium">公式SNS</dt>
-                <dd className="sm:col-span-2 flex items-center gap-4">
+                <dt className="text-slate-400 font-mono text-xs uppercase tracking-wider">公式SNS</dt>
+                <dd className="sm:col-span-2 flex flex-wrap items-center gap-3">
                   {company.twitter && (
                     <a
                       href={getXProfileUrl(company.twitter)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:border-slate-400 hover:text-black transition-colors font-medium text-xs"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:border-slate-400 hover:text-black transition-colors font-semibold text-xs shadow-sm"
                     >
                       <svg
                         className="w-3.5 h-3.5 fill-current"
@@ -231,7 +234,7 @@ export default async function CompanyDetailPage({
                       href={getInstagramProfileUrl(company.instagram)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-pink-700 hover:bg-pink-100 transition-colors font-medium text-xs"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-pink-200 bg-pink-50/70 text-pink-700 hover:bg-pink-100 transition-colors font-semibold text-xs shadow-sm"
                     >
                       <svg
                         className="w-3.5 h-3.5 fill-current"
@@ -248,38 +251,50 @@ export default async function CompanyDetailPage({
             )}
           </dl>
 
-          {/* 応援・シェアアクション */}
-          <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-xs text-slate-500 font-medium">
-              パートナー企業をSNSで応援しよう！
-            </span>
+          {/* 応援・シェアアクション: STADIUM MATCH TICKET PASS */}
+          <div className="mt-10 p-6 rounded-3xl bg-[#040915] text-white border border-white/10 shadow-xl relative overflow-hidden">
+            <div className="absolute -right-8 -top-8 w-48 h-48 bg-tochigi-yellow/15 rounded-full blur-2xl pointer-events-none animate-aurora-slow" />
 
-            <a
-              href={getTweetIntentUrl(tweetText)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-black font-semibold text-xs transition-colors shadow-sm"
-            >
-              <Share2 className="w-3.5 h-3.5" />
-              <span>X で応援ポストする</span>
-            </a>
+            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div className="text-center sm:text-left">
+                <span className="inline-block text-[10px] font-mono tracking-widest text-tochigi-yellow uppercase font-bold mb-1">
+                  TSC Supporter Action Pass
+                </span>
+                <h2 className="text-base sm:text-lg font-black tracking-tight text-white mb-1">
+                  パートナー企業をSNSで応援しよう！
+                </h2>
+                <p className="text-xs text-slate-400">
+                  サポーターの熱いメッセージが、クラブと企業の力になります。
+                </p>
+              </div>
+
+              <a
+                href={getTweetIntentUrl(tweetText)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-tochigi-yellow via-yellow-300 to-amber-400 text-slate-950 hover:opacity-95 font-black text-xs transition-all shadow-glow-yellow shrink-0 active:scale-95"
+              >
+                <Share2 className="w-3.5 h-3.5" />
+                <span>X で応援ポストする</span>
+              </a>
+            </div>
           </div>
         </div>
       </article>
 
       {/* 前後企業ナビゲーション */}
-      <nav aria-label="前後の企業" className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <nav aria-label="前後の企業" className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {prev ? (
           <Link
             href={`/companies/${prev.id}`}
-            className="group flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all text-left"
+            className="specular-card group flex items-center gap-4 p-5 bg-white rounded-3xl border border-slate-200/80 hover:border-slate-300 shadow-card-modern hover:shadow-card-hover hover:-translate-y-0.5 transition-all text-left"
           >
-            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-tochigi-yellow group-hover:text-tochigi-navy transition-colors shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-[#040915] group-hover:text-tochigi-yellow transition-colors shrink-0">
               <ChevronLeft className="w-4 h-4" />
             </div>
             <div className="min-w-0 flex-1">
-              <span className="block text-[11px] text-slate-400 font-medium">前の企業</span>
-              <span className="block text-xs font-bold text-slate-800 truncate group-hover:text-tochigi-navy">
+              <span className="block text-[10px] font-mono tracking-widest text-slate-400 uppercase font-bold">前のパートナー</span>
+              <span className="block text-xs font-bold text-slate-900 truncate group-hover:text-tochigi-blue transition-colors">
                 {prev.name}
               </span>
             </div>
@@ -291,15 +306,15 @@ export default async function CompanyDetailPage({
         {next ? (
           <Link
             href={`/companies/${next.id}`}
-            className="group flex items-center justify-end gap-3 p-4 bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all text-right sm:col-start-2"
+            className="specular-card group flex items-center justify-end gap-4 p-5 bg-white rounded-3xl border border-slate-200/80 hover:border-slate-300 shadow-card-modern hover:shadow-card-hover hover:-translate-y-0.5 transition-all text-right sm:col-start-2"
           >
             <div className="min-w-0 flex-1">
-              <span className="block text-[11px] text-slate-400 font-medium">次の企業</span>
-              <span className="block text-xs font-bold text-slate-800 truncate group-hover:text-tochigi-navy">
+              <span className="block text-[10px] font-mono tracking-widest text-slate-400 uppercase font-bold">次のパートナー</span>
+              <span className="block text-xs font-bold text-slate-900 truncate group-hover:text-tochigi-blue transition-colors">
                 {next.name}
               </span>
             </div>
-            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-tochigi-yellow group-hover:text-tochigi-navy transition-colors shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-[#040915] group-hover:text-tochigi-yellow transition-colors shrink-0">
               <ChevronRight className="w-4 h-4" />
             </div>
           </Link>

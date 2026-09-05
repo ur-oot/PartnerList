@@ -36,22 +36,22 @@ export default function CompanySearchFilter({
     keyword !== "" || selectedCategories.length > 0 || selectedIndustries.length > 0;
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-6 mb-8">
+    <div className="specular-card bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-4 sm:p-6 mb-8 shadow-card-modern">
       {/* 検索入力 & フィルター開閉ボタン */}
       <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+        <div className="relative flex-1 group">
+          <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-slate-700 transition-colors" />
           <input
             type="text"
             value={keyword}
             onChange={(e) => onKeywordChange(e.target.value)}
-            placeholder="会社名、業種、キーワードで検索..."
-            className="w-full pl-11 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-tochigi-yellow focus:border-transparent transition-all"
+            placeholder="企業名、取扱品目、業種、キーワードで検索..."
+            className="w-full pl-12 pr-11 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-sm placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-tochigi-yellow/80 focus:border-transparent transition-all shadow-inner"
           />
           {keyword && (
             <button
               onClick={() => onKeywordChange("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1.5 rounded-full hover:bg-slate-200 transition-colors"
               aria-label="検索ワードをクリア"
             >
               <X className="w-4 h-4" />
@@ -61,16 +61,16 @@ export default function CompanySearchFilter({
 
         <button
           onClick={() => setIsOpenMobileFilter(!isOpenMobileFilter)}
-          className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+          className={`inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-2xl border text-sm font-semibold transition-all ${
             isOpenMobileFilter || selectedCategories.length > 0 || selectedIndustries.length > 0
-              ? "bg-tochigi-navy text-white border-tochigi-navy"
-              : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+              ? "bg-[#040915] text-white border-[#040915] shadow-sm"
+              : "bg-slate-50/80 text-slate-700 border-slate-200/80 hover:bg-slate-100"
           }`}
         >
           <Filter className="w-4 h-4" />
           <span>絞り込み</span>
           {(selectedCategories.length > 0 || selectedIndustries.length > 0) && (
-            <span className="w-5 h-5 rounded-full bg-tochigi-yellow text-tochigi-navy text-xs font-bold flex items-center justify-center">
+            <span className="w-5 h-5 rounded-full bg-tochigi-yellow text-slate-950 text-xs font-black flex items-center justify-center font-mono">
               {selectedCategories.length + selectedIndustries.length}
             </span>
           )}
@@ -83,7 +83,7 @@ export default function CompanySearchFilter({
           {/* サポートメニュー（カテゴリ） */}
           {categories.length > 0 && (
             <div>
-              <span className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+              <span className="block text-[11px] font-mono font-bold text-slate-400 uppercase tracking-widest mb-2.5">
                 サポートメニュー
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -93,10 +93,10 @@ export default function CompanySearchFilter({
                     <button
                       key={cat}
                       onClick={() => onCategoryToggle(cat)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                      className={`px-3 py-1.5 rounded-xl text-xs transition-all ${
                         isSelected
-                          ? "bg-tochigi-navy text-tochigi-yellow shadow-sm font-semibold"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          ? "bg-[#040915] text-tochigi-yellow shadow-sm font-bold ring-1 ring-tochigi-yellow/30"
+                          : "bg-slate-100/80 text-slate-600 hover:bg-slate-200/80 font-medium"
                       }`}
                     >
                       {cat}
@@ -109,20 +109,20 @@ export default function CompanySearchFilter({
 
           {/* 業種 */}
           <div>
-            <span className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-              業種
+            <span className="block text-[11px] font-mono font-bold text-slate-400 uppercase tracking-widest mb-2.5">
+              業種で絞り込む
             </span>
-            <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pr-1">
+            <div className="flex flex-wrap gap-1.5 max-h-52 overflow-y-auto pr-1">
               {industries.map((ind) => {
                 const isSelected = selectedIndustries.includes(ind);
                 return (
                   <button
                     key={ind}
                     onClick={() => onIndustryToggle(ind)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    className={`px-3 py-1.5 rounded-xl text-xs transition-all ${
                       isSelected
-                        ? "bg-tochigi-navy text-tochigi-yellow shadow-sm font-semibold"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        ? "bg-[#040915] text-tochigi-yellow shadow-sm font-bold ring-1 ring-tochigi-yellow/30"
+                        : "bg-slate-100/80 text-slate-600 hover:bg-slate-200/80 font-medium"
                     }`}
                   >
                     {ind}
@@ -137,20 +137,20 @@ export default function CompanySearchFilter({
       {/* 件数表示 & リセット */}
       <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
         <div className="flex items-center gap-2">
-          <span>表示中:</span>
-          <strong className="text-slate-800 font-bold text-sm">
-            {matchedCount} / {totalCount}
+          <span className="text-slate-400">表示中のパートナー:</span>
+          <strong className="text-slate-900 font-mono font-bold text-sm">
+            {matchedCount}
           </strong>
-          <span>社</span>
+          <span className="text-slate-400 font-mono">/ {totalCount} 社</span>
         </div>
 
         {hasActiveFilters && (
           <button
             onClick={onReset}
-            className="inline-flex items-center gap-1 text-slate-400 hover:text-tochigi-navy transition-colors font-medium"
+            className="group inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors font-semibold"
           >
-            <RotateCcw className="w-3 h-3" />
-            条件をクリア
+            <RotateCcw className="w-3.5 h-3.5 group-hover:-rotate-90 transition-transform duration-200" />
+            <span>条件をクリア</span>
           </button>
         )}
       </div>
