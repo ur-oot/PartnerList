@@ -2,6 +2,8 @@ import { MetadataRoute } from "next";
 import { getAllCompanies } from "@/lib/companies";
 import { SITE_URL } from "@/lib/constants";
 
+export const dynamic = "force-static";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const companies = await getAllCompanies();
 

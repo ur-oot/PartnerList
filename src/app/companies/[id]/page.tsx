@@ -13,9 +13,9 @@ import { ArrowLeft, Globe, Building2, Share2, ChevronLeft, ChevronRight } from "
 import type { Metadata } from "next";
 
 interface CompanyDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // 全企業のパスを事前静的生成 (SSG)
@@ -30,7 +30,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: CompanyDetailPageProps): Promise<Metadata> {
-  const company = await getCompanyById(Number(params.id));
+  const { id } = await params;
+  const company = await getCompanyById(Number(id));
 
   if (!company) {
     return {
@@ -65,7 +66,8 @@ export async function generateMetadata({
 export default async function CompanyDetailPage({
   params,
 }: CompanyDetailPageProps) {
-  const company = await getCompanyById(Number(params.id));
+  const { id } = await params;
+  const company = await getCompanyById(Number(id));
 
   if (!company) {
     notFound();
