@@ -1,6 +1,11 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useCallback,
+  useSyncExternalStore,
+} from "react";
 import { FAVORITES_STORAGE_KEY } from "@/lib/constants";
 
 interface FavoritesContextType {
@@ -10,63 +15,82 @@ interface FavoritesContextType {
   isLoaded: boolean;
 }
 
-const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
+const FavoritesContext = createContext<FavoritesContextType | undefined>(
+  undefined
+);
 
-/**
- * localStorage からお気に入りID配列を取得
- */
-function getStoredFavorites(): number[] {
+const STORAGE_CHANGE_EVENT = "favorites-storage-change";
+
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(STORAGE_CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(STORAGE_CHANGE_EVENT, callback);
+  };
+}
+
+let cachedRaw: string | null = null;
+let cachedFavorites: number[] = [];
+
+function getFavoritesSnapshot(): number[] {
   if (typeof window === "undefined") return [];
   try {
-    const item = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    if (!item) return [];
-    const parsed = JSON.parse(item);
-    if (Array.isArray(parsed)) {
-      return parsed
-        .map((id) => Number(id))
-        .filter((id) => !isNaN(id) && id > 0);
+    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY) || "[]";
+    if (raw !== cachedRaw) {
+      cachedRaw = raw;
+      const parsed = JSON.parse(raw);
+      cachedFavorites = Array.isArray(parsed)
+        ? parsed
+            .map((id) => Number(id))
+            .filter((id) => !isNaN(id) && id > 0)
+        : [];
     }
-    return [];
   } catch {
-    return [];
+    cachedFavorites = [];
   }
+  return cachedFavorites;
+}
+
+const emptyServerFavorites: number[] = [];
+function getServerFavoritesSnapshot(): number[] {
+  return emptyServerFavorites;
+}
+
+function getLoadedSnapshot(): boolean {
+  return true;
+}
+function getServerLoadedSnapshot(): boolean {
+  return false;
 }
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const favorites = useSyncExternalStore(
+    subscribe,
+    getFavoritesSnapshot,
+    getServerFavoritesSnapshot
+  );
 
-  // マウント時に localStorage から安全に初期化
-  useEffect(() => {
-    setFavorites(getStoredFavorites());
-    setIsLoaded(true);
+  const isLoaded = useSyncExternalStore(
+    subscribe,
+    getLoadedSnapshot,
+    getServerLoadedSnapshot
+  );
 
-    // 別タブ・ウィンドウ間での更新同期
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === FAVORITES_STORAGE_KEY) {
-        setFavorites(getStoredFavorites());
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  // お気に入りトグル（単一のContext内で確実に同期）
   const toggleFavorite = useCallback((id: number) => {
     const numId = Number(id);
-    setFavorites((prev) => {
-      const exists = prev.includes(numId);
-      const updated = exists
-        ? prev.filter((item) => item !== numId)
-        : [...prev, numId];
-      try {
-        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(updated));
-      } catch (err) {
-        console.error("Failed to save favorites to localStorage:", err);
-      }
-      return updated;
-    });
+    const current = getFavoritesSnapshot();
+    const exists = current.includes(numId);
+    const updated = exists
+      ? current.filter((item) => item !== numId)
+      : [...current, numId];
+
+    try {
+      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(updated));
+      window.dispatchEvent(new Event(STORAGE_CHANGE_EVENT));
+    } catch (err) {
+      console.error("Failed to save favorites to localStorage:", err);
+    }
   }, []);
 
   const isFavorite = useCallback(
