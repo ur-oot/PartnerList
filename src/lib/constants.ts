@@ -4,7 +4,7 @@
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://elastic-shockley-e9a519.netlify.app";
+  "https://partnerlist.netlify.app";
 
 export const SITE_NAME = "栃木SC パートナー企業一覧 | Tochigi SC Partner List";
 
